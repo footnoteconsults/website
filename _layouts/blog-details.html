@@ -1,0 +1,74 @@
+---
+layout: default
+---
+
+<main class="">
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-9 p-3">
+      <p class="">
+        <a href="{{site.baseurl}}/projects.html" class="backlink ms-2"
+          >← See other projects</a
+        >
+      </p>
+
+      <h4 class="text-left p-3 pb-0 mb-0">{{page.title}}</h4>
+      <div class="col-md-6 p-3">
+        <table class="">
+          <tr>
+            <th>Client:</th>
+            <td class="text-left">{{page.client}}</td>
+          </tr>
+          <tr>
+            <th>Category:</th>
+            <td class="text-left">{{page.category}}</td>
+          </tr>
+          <tr>
+            <th>Date Completed:</th>
+            <td class="text-left">{{page.date}}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="row p-3">
+        <div class="col-md-6 p-1 p-md-3">
+          <div class="">
+            <img src="{{page.image}}" alt="" srcset="" />
+          </div>
+        </div>
+        <div class="col-md-6 p-md-3">
+          <h4>Project Description</h4>
+          <p>{{page.description}}</p>
+        </div>
+        <div class="col-md-6 p-1 p-md-3">
+          <div class="">
+            <img src="{{page.image1}}" alt="" srcset="" />
+          </div>
+        </div>
+        <div class="col-md-6 p-1 p-md-3">
+          <div class="">
+            <img src="{{page.image2}}" alt="" srcset="" />
+          </div>
+        </div>
+        <div class="col-md-6 p-1 p-md-3">
+          <div class="">
+            <img src="{{page.image3}}" alt="" srcset="" />
+          </div>
+        </div>
+        <div class="col-md-6 p-1 p-md-3">
+          <div class="">
+            <img src="{{page.image4}}" alt="" srcset="" />
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid article text-dark">{{content}}</div>
+
+      <p class="ib push-1-2 py-3">
+        <a href="{{site.baseurl}}/projects.html" class="backlink"
+          >← See other projects</a
+        >
+      </p>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</main>
