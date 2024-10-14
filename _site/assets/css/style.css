@@ -6113,7 +6113,6 @@ header .header-top-bar .top-social-icons a:hover {
 }
 .single-service-box:hover .contents h4,
 .single-service-box:hover .contents p {
-  color: #fff;
 }
 .single-service-box::after {
   position: absolute;

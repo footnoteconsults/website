@@ -48,3 +48,9 @@ table {
 .text span {
   color: #0215a2;
 }
+.projectsbtn {
+  padding: 10px 20px;
+  background-color: #0215a2;
+  color: aliceblue;
+  border-radius: 5px;
+}

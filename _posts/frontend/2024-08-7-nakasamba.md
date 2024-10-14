@@ -1,6 +1,6 @@
 ---  
 layout: blog-details  
-title: "Nakasamaba 33kV substation"  
+title: "Nakasamba 33kV substation"  
 description: "Design and Construction of Nakasamba Substation in Entebbe"  
 date: 2024-08-07  
 client: "UMEME" 
