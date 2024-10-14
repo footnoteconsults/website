@@ -1,9 +1,9 @@
 ---  
 layout: blog-details  
-title: "mwongyera admin block"  
-description: "These are details about the mwongyera Project"  
+title: "Mwongyera Health Centre III"  
+description: "Construction of an Out- Patient Department at Mwongyera Health Centre III in Rubirizi District "  
 date: 2024-07-07  
-client: "mwongyera Main Block" 
+client: "Ministry of Health UGIFT" 
 permalink: /mwongyera   
 category: "Building & Construction"
 image: "assets/img/project/mwongyera.jpg"  

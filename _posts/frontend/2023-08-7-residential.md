@@ -1,11 +1,11 @@
 ---  
 layout: blog-details  
-title: "Design of Residential house"  
-description: "These are details about the residential Project"   
+title: "Kasangati Residential House"  
+description: "Design and Build of a Residential House in Kasangati "   
 date: 2023-08-07  
 permalink: "/residential"
-client: "private"    
-category: "Sketch & Design"
+client: "Private Developer"    
+category: "Building & Construction"
 image: "assets/img/project/residential.jpg"  
 image1: "assets/img/project/residential1.jpg" 
 image2: "assets/img/project/residential2.jpg" 

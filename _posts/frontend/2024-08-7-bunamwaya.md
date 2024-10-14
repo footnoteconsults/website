@@ -1,9 +1,9 @@
 ---  
 layout: blog-details  
-title: "bunamwaya Residential Flat"  
-description: "These are details about the bunamwaya Project"  
+title: "Bunamwaya Residential House"  
+description: "Construction of a Residential House in Bunamwaya"  
 date: 2024-07-07  
-client: "bunamwaya" 
+client: "Private Developer" 
 permalink: /bunamwaya  
 category: "Building & Construction"
 image: "assets/img/project/bunamwaya.jpg"  

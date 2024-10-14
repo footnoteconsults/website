@@ -1,9 +1,9 @@
 ---  
 layout: blog-details  
-title: "Namagunga girls block"  
-description: "These are details about the Namagunga Project"  
+title: "Classroom Block and Computer Lab"  
+description: "Consultancy Services for the Design of a Classroom Block and Computer Laboratory "  
 date: 2024-08-11  
-client: "Namagunga girls school"
+client: "Mt. St. Mary's College Namagunga"
 permalink: /namagunga      
 category: "Sketch & Design"
 image: "assets/img/project/namagunga1.jpg"  

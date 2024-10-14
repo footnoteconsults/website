@@ -1,9 +1,9 @@
 ---  
 layout: blog-details  
-title: "kajjansi admin block"  
-description: "These are details about the Kajjansi Project"  
+title: "Administration Block Design"  
+description: "Consultancy Services for the Design of Administration Block for Kajjansi Town Council in Namulanda Wakiso"  
 date: 2023-08-07  
-client: "Kajjansi Main Block" 
+client: "Kajjansi Town Council" 
 permalink: /kajjansi   
 category: "Sketch & Design"
 image: "assets/img/project/kajjansi.jpg"  
