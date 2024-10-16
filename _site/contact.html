@@ -246,41 +246,59 @@
       <div class="col-lg-8 col-12">
         <div class="contact-form">
           <h2>Get in Touch</h2>
-          <form
-            action="https://rrdevs.net/demos/html/footnote/mail.php"
-            method="POST"
-            class="row"
-            id="contact-form">
+          <form action="" method="POST" class="row" id="contact-form">
             <div class="col-md-6 col-12">
               <div class="single-personal-info">
-                <input type="text" name="name" placeholder="Name" />
+                <input type="text" name="name" placeholder="Name" required />
               </div>
             </div>
             <div class="col-md-6 col-12">
               <div class="single-personal-info">
-                <input type="email" name="email" placeholder="Email" />
+                <input type="email" name="email" placeholder="Email" required />
               </div>
             </div>
             <div class="col-md-6 col-12">
               <div class="single-personal-info">
-                <input type="text" name="phone" placeholder="Number" />
+                <input type="text" name="phone" placeholder="Number" required />
               </div>
             </div>
             <div class="col-md-6 col-12">
               <div class="single-personal-info">
-                <input type="text" name="subject" placeholder="Subject" />
+                <input
+                  type="text"
+                  name="subject"
+                  placeholder="Subject"
+                  required />
               </div>
             </div>
             <div class="col-md-12 col-12">
               <div class="single-personal-info">
-                <textarea name="message" placeholder="message"></textarea>
+                <textarea
+                  name="message"
+                  placeholder="message"
+                  required></textarea>
               </div>
             </div>
-            <div class="col-md-12 col-12">
-              <input class="submit-btn" type="submit" value="Submit Now" />
+            <div class="form-check my-3">
+              <div class="row">
+                <div class="col-1">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="not-a-robot"
+                    required />
+                </div>
+                <div class="col-11">
+                  <label class="form-check-label h3 text-left" for="not-a-robot"
+                    >I am not a robot</label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 text-center">
+              <button class="submit-btn" type="submit">Send Message</button>
             </div>
           </form>
-          <span class="form-message"></span>
         </div>
       </div>
       <div class="col-lg-4 col-12">
@@ -334,6 +352,72 @@
       tabindex="0"></iframe>
   </div>
 </div>
+
+<!-- /Contact Section -->
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+  (function () {
+    emailjs.init("wvcBgl_07C543imsh");
+  })();
+
+  document
+    .getElementById("contact-form")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      // Check if the checkbox is checked
+      var notARobot = document.getElementById("not-a-robot").checked;
+      if (!notARobot) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please confirm you are not a robot!",
+        });
+        return;
+      }
+
+      // Show loading alert
+      Swal.fire({
+        title: "Sending Message...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      // Get the form data
+      var templateParams = {
+        name: document.getElementsByName("name")[0].value,
+        email: document.getElementsByName("email")[0].value,
+        phone: document.getElementsByName("phone")[0].value,
+        subject: document.getElementsByName("subject")[0].value,
+        message: document.getElementsByName("message")[0].value,
+      };
+
+      // Send the email using emailjs
+      emailjs.send("service_cpapaz9", "template_k6mstcn", templateParams).then(
+        function (response) {
+          Swal.fire({
+            icon: "success",
+            title: "Message Sent",
+            text: "Your message has been sent. Thank you!",
+          });
+        },
+        function (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Failed to send",
+            text:
+              "Failed to send email. Please try again later. Error: " +
+              JSON.stringify(error),
+          });
+        }
+      );
+    });
+</script>
 
 
     
