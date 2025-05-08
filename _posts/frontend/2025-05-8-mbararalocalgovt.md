@@ -1,6 +1,6 @@
 ---  
 layout: blog-details  
-title: "Design Services"  
+title: "Design Services"   
 description: "Consultancy Services for preparation of the site layout, master plan, architectural design , structural design and artistic impression for proposed Mbarara college of nursing and midwifery in Bwizibwera- Rutooma Town Council"  
 date: 2024-07-07  
 client: "Mbarara District Local Government" 
