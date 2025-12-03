@@ -147,7 +147,8 @@
 </div>
 
 <!-- /Contact Section -->
-<script src="https://www.google.com/recaptcha/api.js"></script>
+<!-- Load reCAPTCHA v3 with explicit render param for this site key -->
+<script src="https://www.google.com/recaptcha/api.js?render=6LfhOiAsAAAAAAD5fU4kNUvIdl_R0_JTZ9W-eocq"></script>
 <script
   type="text/javascript"
   src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -162,55 +163,122 @@
     .addEventListener("submit", function (event) {
       event.preventDefault();
 
+      // Validate form fields
+      var name = document.getElementsByName("name")[0].value.trim();
+      var email = document.getElementsByName("email")[0].value.trim();
+      var phone = document.getElementsByName("phone")[0].value.trim();
+      var subject = document.getElementsByName("subject")[0].value.trim();
+      var message = document.getElementsByName("message")[0].value.trim();
+
+      if (!name || !email || !phone || !subject || !message) {
+        Swal.fire({
+          icon: "error",
+          title: "Missing Fields",
+          text: "Please fill in all required fields.",
+        });
+        return;
+      }
+
       // Show loading alert
-      Swal.fire({
+      var loadingAlert = Swal.fire({
         title: "Sending Message...",
         allowOutsideClick: false,
+        allowEscapeKey: false,
         didOpen: () => {
           Swal.showLoading();
         },
       });
 
-      // Execute reCAPTCHA
-      grecaptcha.ready(function () {
-        grecaptcha
-          .execute("6LfhOiAsAAAAAAD5fU4kNUvIdl_R0_JTZ9W-eocq", {
-            action: "submit",
-          })
-          .then(function (token) {
-            // Get the form data
-            var templateParams = {
-              name: document.getElementsByName("name")[0].value,
-              email: document.getElementsByName("email")[0].value,
-              phone: document.getElementsByName("phone")[0].value,
-              subject: document.getElementsByName("subject")[0].value,
-              message: document.getElementsByName("message")[0].value,
-              recaptcha_token: token,
-            };
+      // Execute reCAPTCHA v3 (api.js loaded with ?render=SITE_KEY)
+      if (typeof grecaptcha !== "undefined") {
+        grecaptcha.ready(function () {
+          // Add a safety timeout in case reCAPTCHA stalls
+          var recaptchaTimeout = setTimeout(function () {
+            Swal.close();
+            Swal.fire({
+              icon: "error",
+              title: "Timeout",
+              text: "reCAPTCHA verification timed out. Please try again.",
+              confirmButtonColor: "#d33",
+            });
+          }, 20000); // 20s timeout
 
-            // Send the email using emailjs
-            emailjs
-              .send("service_cpapaz9", "template_k6mstcn", templateParams)
-              .then(
-                function (response) {
-                  Swal.fire({
-                    icon: "success",
-                    title: "Message Sent",
-                    text: "Your message has been sent. Thank you!",
-                  });
-                  document.getElementById("contact-form").reset();
-                },
-                function (error) {
+          grecaptcha
+            .execute("6LfhOiAsAAAAAAD5fU4kNUvIdl_R0_JTZ9W-eocq", {
+              action: "submit",
+            })
+            .then(function (token) {
+              clearTimeout(recaptchaTimeout);
+              // store token into hidden input (optional) for debugging/inspection
+              var tokenField = document.getElementById("recaptcha_token");
+              if (tokenField) tokenField.value = token;
+
+              // Get the form data
+              var templateParams = {
+                name: name,
+                email: email,
+                phone: phone,
+                subject: subject,
+                message: message,
+                recaptcha_token: token,
+              };
+
+              // Send the email using emailjs
+              emailjs
+                .send("service_cpapaz9", "template_k6mstcn", templateParams)
+                .then(
+                  function (response) {
+                    Swal.close();
+                    Swal.fire({
+                      icon: "success",
+                      title: "Message Sent!",
+                      text: "Your message has been sent successfully. Thank you!",
+                      confirmButtonColor: "#3085d6",
+                    });
+                    document.getElementById("contact-form").reset();
+                  },
+                  function (error) {
+                    Swal.close();
+                    Swal.fire({
+                      icon: "error",
+                      title: "Failed to Send",
+                      text: "There was an error sending your message. Please try again later.",
+                      confirmButtonColor: "#d33",
+                    });
+                    console.error("EmailJS error:", error);
+                  }
+                )
+                .catch(function (err) {
+                  Swal.close();
                   Swal.fire({
                     icon: "error",
-                    title: "Failed to send",
-                    text:
-                      "Failed to send email. Please try again later. Error: " +
-                      JSON.stringify(error),
+                    title: "Send Error",
+                    text: "An unexpected error occurred. Please try again.",
+                    confirmButtonColor: "#d33",
                   });
-                }
-              );
-          });
-      });
+                  console.error("EmailJS unexpected error:", err);
+                });
+            })
+            .catch(function (error) {
+              clearTimeout(recaptchaTimeout);
+              Swal.close();
+              Swal.fire({
+                icon: "error",
+                title: "reCAPTCHA Error",
+                text: "Failed to verify reCAPTCHA. Please try again.",
+                confirmButtonColor: "#d33",
+              });
+              console.error("reCAPTCHA error:", error);
+            });
+        });
+      } else {
+        Swal.close();
+        Swal.fire({
+          icon: "error",
+          title: "Security Error",
+          text: "reCAPTCHA failed to load. Ensure your site key and domains are configured correctly.",
+          confirmButtonColor: "#d33",
+        });
+      }
     });
 </script>
