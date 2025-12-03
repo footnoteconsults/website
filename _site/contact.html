@@ -279,21 +279,11 @@
                   required></textarea>
               </div>
             </div>
-            <div class="form-check my-3">
-              <div class="row">
-                <div class="col-1">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="not-a-robot"
-                    required />
-                </div>
-                <div class="col-11">
-                  <label class="form-check-label h3 text-left" for="not-a-robot"
-                    >I am not a robot</label
-                  >
-                </div>
-              </div>
+            <div class="col-md-12">
+              <input
+                type="hidden"
+                name="recaptcha_token"
+                id="recaptcha_token" />
             </div>
             <div class="col-md-12 text-center">
               <button class="submit-btn" type="submit">Send Message</button>
@@ -354,6 +344,7 @@
 </div>
 
 <!-- /Contact Section -->
+<script src="https://www.google.com/recaptcha/api.js"></script>
 <script
   type="text/javascript"
   src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -368,17 +359,6 @@
     .addEventListener("submit", function (event) {
       event.preventDefault();
 
-      // Check if the checkbox is checked
-      var notARobot = document.getElementById("not-a-robot").checked;
-      if (!notARobot) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Please confirm you are not a robot!",
-        });
-        return;
-      }
-
       // Show loading alert
       Swal.fire({
         title: "Sending Message...",
@@ -388,34 +368,47 @@
         },
       });
 
-      // Get the form data
-      var templateParams = {
-        name: document.getElementsByName("name")[0].value,
-        email: document.getElementsByName("email")[0].value,
-        phone: document.getElementsByName("phone")[0].value,
-        subject: document.getElementsByName("subject")[0].value,
-        message: document.getElementsByName("message")[0].value,
-      };
+      // Execute reCAPTCHA
+      grecaptcha.ready(function () {
+        grecaptcha
+          .execute("6Lf4DSAsAAAAANMsLsLrbN2WcLAGO3j529wQcYrN", {
+            action: "submit",
+          })
+          .then(function (token) {
+            // Get the form data
+            var templateParams = {
+              name: document.getElementsByName("name")[0].value,
+              email: document.getElementsByName("email")[0].value,
+              phone: document.getElementsByName("phone")[0].value,
+              subject: document.getElementsByName("subject")[0].value,
+              message: document.getElementsByName("message")[0].value,
+              recaptcha_token: token,
+            };
 
-      // Send the email using emailjs
-      emailjs.send("service_cpapaz9", "template_k6mstcn", templateParams).then(
-        function (response) {
-          Swal.fire({
-            icon: "success",
-            title: "Message Sent",
-            text: "Your message has been sent. Thank you!",
+            // Send the email using emailjs
+            emailjs
+              .send("service_cpapaz9", "template_k6mstcn", templateParams)
+              .then(
+                function (response) {
+                  Swal.fire({
+                    icon: "success",
+                    title: "Message Sent",
+                    text: "Your message has been sent. Thank you!",
+                  });
+                  document.getElementById("contact-form").reset();
+                },
+                function (error) {
+                  Swal.fire({
+                    icon: "error",
+                    title: "Failed to send",
+                    text:
+                      "Failed to send email. Please try again later. Error: " +
+                      JSON.stringify(error),
+                  });
+                }
+              );
           });
-        },
-        function (error) {
-          Swal.fire({
-            icon: "error",
-            title: "Failed to send",
-            text:
-              "Failed to send email. Please try again later. Error: " +
-              JSON.stringify(error),
-          });
-        }
-      );
+      });
     });
 </script>
 
