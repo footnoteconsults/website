@@ -61,6 +61,17 @@
                   required></textarea>
               </div>
             </div>
+            <!-- Honeypot field: hidden from human users; bots often fill it -->
+            <div class="col-md-12 col-12" style="display: none">
+              <div class="single-personal-info">
+                <input
+                  type="text"
+                  name="company"
+                  id="company_hpot"
+                  autocomplete="off"
+                  tabindex="-1" />
+              </div>
+            </div>
             <div class="col-md-12">
               <input
                 type="hidden"
@@ -158,6 +169,33 @@
     emailjs.init("wvcBgl_07C543imsh");
   })();
 
+  // Validation utilities
+  function isValidEmail(email) {
+    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
+
+  function isValidPhone(phone) {
+    // Accept digits and common separators; count digits (local phone length between 7 and 15)
+    var digits = (phone || "").replace(/\D/g, "");
+    return digits.length >= 7 && digits.length <= 15;
+  }
+
+  function isProbablyGibberish(s) {
+    if (!s) return false;
+    s = s.trim();
+    if (s.length < 8) return false; // short strings are fine
+    var lettersOnly = (s.match(/[a-zA-Z]/g) || []).join("");
+    if (lettersOnly.length < 5) return false; // too few letters to judge
+    var vowels = (lettersOnly.match(/[aeiouAEIOU]/g) || []).length;
+    var vowelRatio = vowels / (lettersOnly.length || 1);
+    // Suspicious if very low vowel ratio (many consonants, like random tokens)
+    if (vowelRatio < 0.15) return true;
+    // Also suspicious if there's no whitespace in a long field and vowel ratio low
+    if (s.indexOf(" ") === -1 && vowelRatio < 0.2) return true;
+    return false;
+  }
+
   document
     .getElementById("contact-form")
     .addEventListener("submit", function (event) {
@@ -169,12 +207,55 @@
       var phone = document.getElementsByName("phone")[0].value.trim();
       var subject = document.getElementsByName("subject")[0].value.trim();
       var message = document.getElementsByName("message")[0].value.trim();
+      var honeypot = document.getElementsByName("company")[0]
+        ? document.getElementsByName("company")[0].value.trim()
+        : "";
+
+      // Silent block if honeypot is filled (likely bot)
+      if (honeypot) {
+        console.warn("Honeypot filled — suspected bot submission blocked.");
+        return;
+      }
 
       if (!name || !email || !phone || !subject || !message) {
         Swal.fire({
           icon: "error",
           title: "Missing Fields",
           text: "Please fill in all required fields.",
+        });
+        return;
+      }
+
+      // Field-specific validations
+      if (!isValidEmail(email)) {
+        Swal.fire({
+          icon: "error",
+          title: "Invalid Email",
+          text: "Please enter a valid email address.",
+        });
+        return;
+      }
+
+      if (!isValidPhone(phone)) {
+        Swal.fire({
+          icon: "error",
+          title: "Invalid Phone Number",
+          text: "Please enter a valid phone number (digits only, 7-15 digits).",
+        });
+        return;
+      }
+
+      // Reject gibberish submissions
+      if (
+        isProbablyGibberish(name) ||
+        isProbablyGibberish(subject) ||
+        isProbablyGibberish(message) ||
+        message.length < 10
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Invalid Content",
+          text: "Please provide a clear, meaningful message and subject.",
         });
         return;
       }
