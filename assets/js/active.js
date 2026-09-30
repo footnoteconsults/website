@@ -99,6 +99,34 @@ Author: RRDevs
       ],
     });
 
+    var prefersReducedMotion =
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if ("IntersectionObserver" in window && !prefersReducedMotion) {
+      var backgroundVideoObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              var playback = entry.target.play();
+              if (playback && typeof playback.catch === "function") {
+                playback.catch(function () {});
+              }
+            } else {
+              entry.target.pause();
+            }
+          });
+        },
+        { threshold: 0.25 },
+      );
+
+      document
+        .querySelectorAll(".hero-background-video")
+        .forEach(function (video) {
+          backgroundVideoObserver.observe(video);
+        });
+    }
+
     $(".hero-slider-2").owlCarousel({
       items: 1,
       dots: false,
