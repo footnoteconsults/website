@@ -66,3 +66,14 @@ input,
 textarea {
   border-bottom: 2px solid #000000 !important;
 }
+
+@media (min-width: 992px) and (max-height: 800px) {
+  .hero-1 .hero-contents {
+    padding-bottom: 140px;
+  }
+
+  .hero-1 .hero-slider-active .owl-nav .owl-prev,
+  .hero-1 .hero-slider-active .owl-nav .owl-next {
+    bottom: 12px;
+  }
+}
