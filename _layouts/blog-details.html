@@ -40,31 +40,55 @@ layout: default
           <h4>Project Description</h4>
           <p>{{page.description}}</p>
         </div>
+        {% if page.image1 %}
         <div class="col-md-6 p-1 p-md-3">
           <div class="">
             <img src="{{page.image1}}" class="img-fluid" alt="" srcset="" />
           </div>
         </div>
+        {% endif %}
+        {% if page.image2 %}
         <div class="col-md-6 p-1 p-md-3">
           <div class="">
             <img src="{{page.image2}}" class="img-fluid" alt="" srcset="" />
           </div>
         </div>
+        {% endif %}
+        {% if page.image3 %}
         <div class="col-md-6 p-1 p-md-3">
           <div class="">
             <img src="{{page.image3}}" class="img-fluid" alt="" srcset="" />
           </div>
         </div>
+        {% endif %}
+        {% if page.image4 %}
         <div class="col-md-6 p-1 p-md-3">
           <div class="">
             <img src="{{page.image4}}" class="img-fluid" alt="" srcset="" />
           </div>
         </div>
+        {% endif %}
+        {% if page.image5 %}
         <div class="col-md-6 p-1 p-md-3">
           <div class="">
             <img src="{{page.image5}}" class="img-fluid" alt="" srcset="" />
           </div>
         </div>
+        {% endif %}
+        {% if page.video %}
+        <div class="col-12 p-1 p-md-3">
+          <h4 class="mb-3">Project Video</h4>
+          <div class="rounded overflow-hidden shadow-sm" style="max-width: 850px;">
+            <video controls playsinline preload="metadata" style="width: 100%; max-height: 520px; background: #000; border-radius: 8px;">
+              <source src="{{page.video}}" type="video/mp4" />
+              {% if page.video_mov %}
+              <source src="{{page.video_mov}}" type="video/quicktime" />
+              {% endif %}
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+        {% endif %}
       </div>
       <div class="container-fluid article text-dark">{{content}}</div>
 
